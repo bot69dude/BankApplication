@@ -12,14 +12,12 @@ import java.util.concurrent.Executors;
 
 public class BankApp {
     public static void main(String[] args) {
-        // Initialize components with dependency injection
         AccountRepository accountRepository = new InMemoryAccountRepository();
         BankService bankService = new BankServiceImpl(accountRepository);
         ExecutorService executor = Executors.newFixedThreadPool(5);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         
         try {
-            // Create and start the controller
             BankController controller = new BankController(bankService, executor, reader);
             controller.start();
         } catch (IOException e) {
