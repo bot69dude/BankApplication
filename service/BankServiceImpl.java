@@ -4,6 +4,7 @@ import model.Account;
 import repository.AccountRepository;
 import exception.AccountNotFoundException;
 import exception.InsufficientFundsException;
+import util.ConsoleUtils;
 
 public class BankServiceImpl implements BankService {
     private final AccountRepository accountRepository;
@@ -32,7 +33,7 @@ public class BankServiceImpl implements BankService {
         Account account = getAccount(accountNumber);
         account.deposit(amount);
         accountRepository.save(account);
-        System.out.println(Thread.currentThread().getName() + " deposited: " + amount);
+        ConsoleUtils.printInfo(Thread.currentThread().getName() + " deposited: $" + amount);
     }
 
     @Override
@@ -42,7 +43,7 @@ public class BankServiceImpl implements BankService {
             throw new InsufficientFundsException("Insufficient funds in account: " + accountNumber);
         }
         accountRepository.save(account);
-        System.out.println(Thread.currentThread().getName() + " withdrew: " + amount);
+        ConsoleUtils.printInfo(Thread.currentThread().getName() + " withdrew: $" + amount);
     }
 
     @Override
@@ -57,16 +58,16 @@ public class BankServiceImpl implements BankService {
                         to.deposit(amount);
                         accountRepository.save(from);
                         accountRepository.save(to);
-                        System.out.println("Transferred " + amount + " from " + fromAccNum + " to " + toAccNum);
+                        ConsoleUtils.printInfo("Transferred $" + amount + " from " + fromAccNum + " to " + toAccNum);
                         return true;
                     } else {
-                        System.out.println("Transfer failed due to insufficient funds.");
+                        ConsoleUtils.printError("Transfer failed due to insufficient funds.");
                         return false;
                     }
                 }
             }
         } catch (AccountNotFoundException e) {
-            System.out.println("Transfer failed: " + e.getMessage());
+            ConsoleUtils.printError("Transfer failed: " + e.getMessage());
             return false;
         }
     }
