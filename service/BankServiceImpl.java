@@ -73,20 +73,10 @@ public class BankServiceImpl implements BankService {
     }
 
     public boolean applyForLoan(Account account, double loanAmount) {
-        // try {
-        //     Account account = getAccount(accountNumber);
-            // Simple eligibility check: must have positive balance and loanAmount > 0
-            if (account.getBalance() > 0 && loanAmount > 0) {
-                // For demonstration, just print approval and return true
-                //ConsoleUtils.printInfo("Loan of $" + loanAmount + " approved for account: " + accountNumber);
-                return true;
-            } else {
-                //ConsoleUtils.printError("Loan application denied for account: " + accountNumber);
-                return false;
-            }
-        // } catch (AccountNotFoundException e) {
-        //     ConsoleUtils.printError("Loan application failed: " + e.getMessage());
-        //     return false;
-        // }
+        if (account.getBalance() > 0 && loanAmount > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
