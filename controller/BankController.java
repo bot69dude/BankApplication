@@ -28,7 +28,8 @@ public class BankController {
                 "Deposit", 
                 "Withdraw", 
                 "Transfer", 
-                "Balance", 
+                "Balance",
+                "Apply For Loan",
                 "Exit"
             };
             ConsoleUtils.printMenu("Bank Menu", options);
@@ -40,7 +41,8 @@ public class BankController {
                 case 3 -> withdraw();
                 case 4 -> transfer();
                 case 5 -> checkBalance();
-                case 6 -> {
+                case 6 -> loanApply();
+                case 7 -> {
                     executor.shutdown();
                     ConsoleUtils.printInfo("Thank you for using our service!");
                     return;
@@ -119,6 +121,32 @@ public class BankController {
             ConsoleUtils.printBox("Balance: $" + account.getBalance());
         } catch (AccountNotFoundException e) {
             ConsoleUtils.printError("Account not found.");
+        }
+    }
+
+    private void loanApply(){
+        ConsoleUtils.printHeader("Apply For Loan");
+        try {
+            System.out.print("Account number: ");
+            String acc = reader.readLine().trim();
+            System.out.print("Loan amount: ");
+            double amt = Double.parseDouble(reader.readLine().trim());
+            executor.submit(() -> {
+                try {
+                    Account account = bankService.getAccount(acc);
+                    boolean approved = bankService.applyForLoan(account, amt);
+                    if (approved) {
+                        ConsoleUtils.printInfo("Loan of $" + amt + " approved for account: " + acc);
+                    } else {
+                       
+                    ConsoleUtils.printError("Loan application denied for account: " + acc);
+                }
+                } catch (AccountNotFoundException e) {
+                    ConsoleUtils.printError("Loan Application Failed : Account not found.");
+                }
+            });
+        } catch (IOException e) {
+            ConsoleUtils.printError("Error reading input.");
         }
     }
 }

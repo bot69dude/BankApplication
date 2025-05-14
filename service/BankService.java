@@ -10,4 +10,5 @@ public interface BankService {
     void deposit(String accountNumber, double amount) throws AccountNotFoundException;
     void withdraw(String accountNumber, double amount) throws AccountNotFoundException, InsufficientFundsException;
     boolean transfer(String fromAccNum, String toAccNum, double amount);
+    boolean applyForLoan(Account account, double loanAmount);
 }
