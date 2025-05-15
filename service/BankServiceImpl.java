@@ -71,4 +71,12 @@ public class BankServiceImpl implements BankService {
             return false;
         }
     }
+
+    public boolean applyForLoan(Account account, double loanAmount) {
+        if (account.getBalance() > 0 && loanAmount > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
